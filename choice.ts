@@ -1,15 +1,10 @@
-// Define a set of named constants for user roles.
-// By default, enum members are assigned numeric values starting from 0:
-// Admin = 0, User = 1, Guest = 2
-// enum Role {
-//     Admin,
-//     User,
-//     Guest
-// }
+// Union of literal types: restricts the variable to only these specific values.
+// Unlike "string", which allows any string, this only allows 'admin', 'edit', or 'guest'.
+// This is a simpler alternative to enum when you have a small set of fixed values.
+let userRole: 'admin' | 'edit' | 'guest' = 'admin';
 
-// let userRole: UserRole = Role.Admin;
+userRole = 'edit';
 
-// userRole = Role.Guest;
+let possibleValues: [1 | -1, number];
 
-let userRole: 'admin' | 'user' | 'guest' = 'admin';
-userRole = 'user';
+possibleValues = [1, 100];
