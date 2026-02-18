@@ -40,3 +40,26 @@ role = Role.Edit;
 | Values | Actual strings | Numbers by default (0, 1, 2) |
 | Simplicity | Inline, no extra declaration | Requires separate definition |
 | Best for | Small, simple sets of values | Larger sets or when you need numeric mapping |
+
+### `type` vs `let`
+
+`type` and `let` live in completely different worlds.
+
+- **`type`** — defines a name for a type. Exists only at compile time and is erased from the output JavaScript.
+- **`let`** — declares a variable that holds an actual value. Exists at runtime.
+
+```ts
+type Role = 'admin' | 'edit' | 'guest' | 'reader'; // blueprint (compile-time only)
+let userRole: Role = 'admin';                        // actual data (runtime)
+```
+
+Think of it like a blueprint vs a building:
+- `type` is the blueprint — it only exists on paper and describes the shape.
+- `let` is the actual building — it exists in reality and takes up space.
+
+| | `type` | `let` |
+|---|---|---|
+| Purpose | Give a name to a type | Declare a variable to hold a value |
+| Exists at runtime | No (erased after compilation) | Yes |
+| Can be reassigned | No | Yes |
+| Uses memory | No | Yes |
