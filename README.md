@@ -10,6 +10,49 @@
 
 ## Notes
 
+### `void` vs `never` — Return Type Annotations
+
+Both `void` and `never` are used as return types for functions that don't return a useful value, but they mean very different things.
+
+**`void`** — the function finishes and returns to the caller, but has no return value:
+
+```ts
+function log(message: string): void {
+    console.log(message);
+    // execution ends here, then goes back to the caller ✅
+}
+```
+
+**`never`** — the function never returns to the caller at all:
+
+```ts
+function logAndThrow(errorMessage: string): never {
+    console.log(errorMessage);
+    throw new Error(errorMessage);
+    // throws an error, so execution NEVER comes back to the caller ❌
+}
+```
+
+Think of it like this:
+- `void` = "I finished my job, but I have nothing to give back."
+- `never` = "I never finished. I either crashed (throw) or ran forever (infinite loop)."
+
+If you write `: never` but the function could possibly finish normally, TypeScript will give you an error:
+
+```ts
+function broken(msg: string): never {
+    console.log(msg);
+    // Error! This function can finish normally — it should be void, not never
+}
+```
+
+| | `void` | `never` |
+|---|---|---|
+| Returns to caller? | Yes | No |
+| Has a return value? | No | No |
+| Typical use case | Functions that just do something (e.g. logging) | Functions that always throw or loop forever |
+| Can be omitted? | Yes (TypeScript infers it) | No (must be explicit) |
+
 ### Union of Literal Types vs Enum
 
 Both can restrict a variable to a fixed set of values, but they differ in syntax and behavior.

@@ -11,3 +11,16 @@ function add(a: number, b: number) : number {
 function log(message: string) : void {
     console.log(message);
 }
+
+// Return type annotation (: never) means this function NEVER returns to the caller.
+// Unlike void (which returns, just with no value), never means execution stops here —
+// either by throwing an error or running an infinite loop.
+// TypeScript will give an error if the function could possibly finish without throwing.
+function logAndThrow(errorMessage: string): never {
+    console.log(errorMessage);
+    throw new Error(errorMessage);
+}
+
+function performJob(cb: () => void) {
+    
+}
