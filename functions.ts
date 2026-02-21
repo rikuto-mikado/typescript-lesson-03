@@ -4,3 +4,10 @@
 function add(a: number, b: number) : number {
     return a + b;
 }
+
+// Return type annotation (: void) means this function returns nothing.
+// If omitted, TypeScript infers it automatically, but writing it explicitly
+// prevents mistakes — e.g., accidentally returning a value will cause an error.
+function log(message: string) : void {
+    console.log(message);
+}
