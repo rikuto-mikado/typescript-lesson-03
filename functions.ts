@@ -21,6 +21,34 @@ function logAndThrow(errorMessage: string): never {
     throw new Error(errorMessage);
 }
 
-function performJob(cb: () => void) {
-    
+const logMsg = (msg: string) => {
+    console.log(msg);
+};
+
+// The parameter cb is itself a function: it takes a string and returns nothing (void).
+// This pattern is called a "callback" — you pass in a function to be called later.
+// The ): void at the end is performJob's own return type (it returns nothing).
+function performJob(cb: (msg: string) => void): void {
+    cb("Job performed");
 }
+
+performJob(logMsg);
+
+type Users = {
+    name: string;
+    age: number;
+    greet: () => string;
+}
+
+let user: Users = {
+    name: "Rikuto",
+    age: 19,
+    // Must use function() here, not an arrow function.
+    // Arrow functions don't have their own `this`, so this.name / this.age would not work.
+    greet: function() {
+        console.log(`Hello, my name is ${this.name} and ${this.age} years old.`);
+        return `Hello, my name is ${this.name} and ${this.age} years old.`;
+    }
+}
+
+user.greet();
