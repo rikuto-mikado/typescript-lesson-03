@@ -2,11 +2,13 @@
 
 ## What I Learned
 
-<!-- TODO -->
+- Optional parameters (`?`) in functions and type definitions
+- The difference between `||` (logical OR) and `??` (nullish coalescing)
+- How falsy values behave differently depending on the operator used
 
 ## What Was Difficult
 
-<!-- TODO -->
+- Understanding why `??` and `||` produce different results with empty strings (`''`) and `0` — both look like "no value" but TypeScript/JavaScript treats them differently depending on the operator.
 
 ## Notes
 
@@ -106,3 +108,68 @@ Think of it like a blueprint vs a building:
 | Exists at runtime | No (erased after compilation) | Yes |
 | Can be reassigned | No | Yes |
 | Uses memory | No | Yes |
+
+### Optional Parameters and Properties (`?`)
+
+Adding `?` after a parameter or property name makes it optional — it can be omitted, in which case its value becomes `undefined`.
+
+```ts
+// Optional function parameter
+function generateError(msg?: string) {
+    throw new Error(msg); // msg may be undefined
+}
+
+generateError("An error occurred"); // OK
+generateError();                    // also OK — msg is undefined
+
+// Optional type property
+type User = {
+    name: string;
+    age: number;
+    role?: 'admin' | 'guest'; // can be omitted
+}
+
+const user: User = { name: 'Alice', age: 30 }; // role is omitted → undefined
+```
+
+### `||` vs `??` — Default Value Operators
+
+Both are used to provide a fallback value, but they differ in what counts as "no value."
+
+**`||` (Logical OR)** — returns the right side if the left side is **falsy**:
+
+```ts
+'' || 'default'     // → 'default'  ('' is falsy)
+0  || 42            // → 42         (0 is falsy)
+null || 'default'   // → 'default'
+```
+
+**`??` (Nullish Coalescing)** — returns the right side only if the left side is **`null` or `undefined`**:
+
+```ts
+'' ?? 'default'     // → ''         ('' is not null/undefined → keep it)
+0  ?? 42            // → 0          (0 is not null/undefined → keep it)
+null ?? 'default'   // → 'default'
+```
+
+**Falsy values in JavaScript:**
+
+| Value | Falsy? | `\|\|` result | `??` result |
+|---|---|---|---|
+| `''` (empty string) | Yes | Right side | Left side (`''`) |
+| `0` | Yes | Right side | Left side (`0`) |
+| `false` | Yes | Right side | Left side (`false`) |
+| `null` | Yes | Right side | Right side |
+| `undefined` | Yes | Right side | Right side |
+
+**When to use which:**
+
+- Use `||` when you want to treat any falsy value (including `''`, `0`) as "missing"
+- Use `??` when you only want to fall back if the value is truly absent (`null` / `undefined`)
+
+```ts
+let input = '';
+
+const a = input || false;  // → false  ('' is falsy, so fall back)
+const b = input ?? false;  // → ''     ('' is not null/undefined, so keep it)
+```
